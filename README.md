@@ -2,4 +2,6 @@
 
 Thank you very much for your interest in our work.
 
-I am reimplementing the model by pytorch. This version will be faster and more stable. The code will be available in **June**. :)
+I am reimplementing the model by Pytorch. This version will be more **well-structured**, **faster** and more **stable**.
+
+The code will be available in late **June**. :)
