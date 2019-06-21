@@ -2,4 +2,4 @@
 
 Thank you very much for your interest in our work.
 
-The **code** is released. The detailed instructions is comming soon. :)
+The **code** is released. The detailed instruction is comming soon. :)
