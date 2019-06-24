@@ -52,6 +52,7 @@ Another way is that specifying the values in the command, e.g.,:
 **Note that** you may need to modify the **hidden layer sizes** of the **two neural networks** (e.g., the classifier and reliability estimator) in our model according to your task. For example, if your instance vector is 200-dimensional, you may want the hidden layer of the classifier and reliability estimator to have 50 units (`-hc 50`) and 25 units (`-hr 25`) respectively. You may also need to set the **number of classes** (e.g., `-nl 3` if your label set is {cat, dog, other}) in your dataset.
 
 Below is the detailed description of each hyper-parameter.
+
 | short  | long  | description  | default value or example|
 |---|---|---|---|
 | -ii| --instances  | Path of instances |demo_instances.txt  |
@@ -109,7 +110,9 @@ _**Estimated Per-Instance Reliabilities of Each Annotator**_ (e.g., demo_reliabi
 
 ### [FAQ - Frequently Asked Questions]
 **Q: Is there any difference between this re-implemented version and the original model described in the paper?**
+
 **A:** This code implements the cross-entropy (training alternatingly) method for training our model. This method achieved much better and more stable performance than the models learned using EM training reported in our paper. In the cross-entropy loss function, instead of minimising the cross-entropy between the posteriors and output of classifier/reliability estimator, the estimated labels obtained according to the posteriors are used to compute the cross-entropy loss. Because in this way, the model could obtain good results faster than that of the original model. But you can still get good performance if you use the loss function described by Equation 6 and 7 in our paper.
 
 ****Q:** Some times the model obtained the highest label prediction performance at the first outer epoch, but it eventually starts to decrease at the following epochs. For example, the f1-scores at the first beginning epochs could be "0.989->0.987->0.984->0.977->0.987...".**
+
 **A:** Please refer to ***Early Stopping in Section 5.5 Training Stability*** of our paper for this situation. In fact, the label prediction performance in the first epoch has always been pretty good. If you prefer a faster model when using the code, you can just set the number of outer epochs to 1. 
