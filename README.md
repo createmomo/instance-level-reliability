@@ -24,24 +24,26 @@ _Examples including, but not limited to_:
 ### [To Prepare for Running]
 The **crowd annotations** and **instances** are required. The **expert (i.e., gold) labels** and the **labels for initialisating (i.e., pre-train)** the model are optional.
 
-_**Crowd Annotation**_ (e.g., demo_crowd_labels.txt):
+_**Crowd Annotation (e.g., demo_crowd_labels.txt):**_
 Each line includes the crowd labels from multiple annotators for one instance, and these crowd labels are separated by commas. For example,
 `1,1,1,0,0`. 
 If the crowd labels are not complete, in other words, not all the instances were annotated by all the annotators, the missing labels can be left as empty as follows: `1,1,,0,0`
 
-_**Instances**_ (e.g., demo_instances.txt):
+_**Instances (e.g., demo_instances.txt):**_
 Each line is the feature representation of each instance, e.g., the vector representation of one text fragment or image.
 
-_**Expert/Gold Labels**_ (e.g., demo_expert_labels.txt):
+_**Expert/Gold Labels (e.g., demo_expert_labels.txt):**_
 Each line is the expert's/gold label of each instance. If the expert label is provided, the code will evaluate the performance (i.e., precision, recall and f1-score) of predicting the true labels at each epoch.
 
-_**Labels for Initialisation or Pre-Train the model**_ (e.g., demo_labels_for_initialisation.txt): 
+_**Labels for Initialisation or Pre-Train the model (e.g., demo_labels_for_initialisation.txt):**_
 Each line is a label for each instance. These labels will be used to pre-train/initialise our model. The labels could be obtained by applying other methods (e.g., arbitrarily select one label from annotators' annotations, Majority Voting, [Dawid-Skene](https://github.com/dallascard/dawid_skene) or [MACE](https://www.isi.edu/publications/licensed-sw/mace/)) to the crowd annotations. It is strongly recommended that preparing the labels for initialisation. Although these labels are not perfect, our method can still learn some useful information from them for a better starting point than random parameter initialisation.
 
 ### [To Run the Code]
 There are 2 ways to set the hyper-parameters. 
 
-One way is to modify the hyper-parameter default values in the code (i.e., from line 212, run.py), then run command: `python run.py`. Another way is that specifying the values in the command, e.g.,:
+One way is to modify the hyper-parameter default values in the code (i.e., from line 212, run.py), then run command: `python run.py`. 
+
+Another way is that specifying the values in the command, e.g.,:
 `python run.py -ii demo_instance.txt -ic demo_crowd_labels.txt`
 
 **Note that** you may need to modify the **hidden layer sizes** of the **two neural networks** (e.g., the classifier and reliability estimator) in our model according to your task. For example, if your instance vector is 200-dimensional, you may want the hidden layer of the classifier and reliability estimator to have 50 units (`-hc 50`) and 25 units (`-hr 25`) respectively. You may also need to set the **number of classes** (e.g., `-nl 3` if your label set is {cat, dog, other}) in your dataset.
@@ -98,10 +100,10 @@ _**Explanation of the output**_:
 ### [Final Output]
 2 output files will be produced once the running is finished.
 
-_**Predicted Correct Labels**_ (e.g., demo_predicted_labels.output): 
+_**Predicted Correct Labels (e.g., demo_predicted_labels.output):**_
 Each line is the predicted label for each instance.
 
-_**Estimated Per-Instance Reliabilities of Each Annotator**_ (e.g., demo_reliabilities.output): 
+_**Estimated Per-Instance Reliabilities of Each Annotator (e.g., demo_reliabilities.output):**_ 
 Each line includes the estimated annotators' per-instance reliabilities on the current instance. Therefore, this output would have the number of instances lines and the number of annotators columns.
 
 ### [FAQ - Frequently Asked Questions]
