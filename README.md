@@ -7,9 +7,11 @@ It is re-implemented by using PyTorch. Please cite the paper when using the code
 * Li, M., Myrman, A.F., Mu, T. and Ananiadou, S., 2019, June. [Modelling Instance-Level Annotator Reliability for Natural Language Labelling Tasks](https://www.aclweb.org/anthology/N19-1295). In _Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers)_ (pp. 2873-2883).
 
 _**Motivation**_ 
+
 Annotators (e.g., experts or crowd workers) may provide **labels of inconsistent quality** due to their varying expertise and reliability in a domain; Previous studies have mostly focused on estimating **overall** or **per-category reliability**; In practice, the **reliability** of an annotator may depend on **each specific instance**.
 
 _**What task can the code be used for?**_ 
+
 _Examples including, but not limited to_: 
 * Learning a model from **noisy labels** produced by multiple annotators or data sources; 
 * Estimate the **reliability of annotators** across different instances for **spammer/unreliable annotator/data source detection**, **low-quality label reduction**, **task allocation** in [pro-active learning](https://www.aclweb.org/anthology/W17-2314) or crowdsourcing environment (i.e., select the most appropriate annotators to request the labels for each instance);
@@ -25,18 +27,23 @@ _Examples including, but not limited to_:
 The **crowd annotations** and **instances** are required. The **expert (i.e., gold) labels** and the **labels for initialisating (i.e., pre-train)** the model are optional.
 
 _**Crowd Annotation**_ (e.g., demo_crowd_labels.txt)
+
 **Each line** includes the crowd labels from multiple annotators for one instance, and these **crowd labels** are separated by commas. For example,
 `1,1,1,0,0`
+
 If the crowd labels are not complete, in other words, not all the instances were annotated by all the annotators, the **missing labels** can be left as empty as follows:
 `1,1,,0,0`
 
 _**Instances**_ (e.g., demo_instances.txt)
+
 **Each line** is the feature representation of each instance, e.g., the vector representation of one text fragment or image.
 
 _**Expert/Gold Labels**_ (e.g., demo_expert_labels.txt)
+
 **Each line** is the expert's/gold label of each instance. If the expert label is provided, the code will evaluate the performance (i.e., precision, recall and f1-score) of predicting the true labels at each epoch.
 
 _**Labels for Initialisation or Pre-Train the model**_ (e.g., demo_labels_for_initialisation.txt)
+
 **Each line** is a label for each instance. These labels will be used to pre-train/initialise our model. The labels could be obtained by applying other methods (e.g., arbitrarily select one label from annotators' annotations, Majority Voting, [Dawid-Skene](https://github.com/dallascard/dawid_skene) or [MACE](https://www.isi.edu/publications/licensed-sw/mace/)) to the crowd annotations. 
 
 It is strongly recommended that preparing the labels for initialisation. Although these labels are not perfect, our method can still learn some useful information from them for a better starting point than random parameter initialisation.
@@ -94,6 +101,7 @@ epoch:4 precision:0.993 recall:0.993 f1:0.993
 ```
 
 _**Explanation of the output**_:
+
 * `Namespace(...)`: displays the parameter settings.
 * `1000 instances; 5 annotators; 2 labels; 2 dimension;`:  describes how many instances, annotators, classes in your dataset and the dimensions of your instance vector.
 * `pre-train-classifier-epoch-0 f1:0.33`: indicates the f1-score of the classifier on the labels for initialisation (not on the expert/gold labels). Please find more details about the performance in the description of parameter `-pt`.
@@ -103,15 +111,18 @@ _**Explanation of the output**_:
 2 output files will be produced once the running is finished.
 
 _**Predicted Correct Labels**_ (e.g., demo_predicted_labels.output)
+
 **Each line** is the predicted label for each instance.
 
 _**Estimated Per-Instance Reliabilities of Each Annotator**_ (e.g., demo_reliabilities.output)
+
 **Each line** includes the estimated annotators' per-instance reliabilities on the current instance. Therefore, this output would have the number of instances lines and the number of annotators columns.
 
 ### [FAQ - Frequently Asked Questions]
 **Q: Is there any difference between this re-implemented version and the original model described in the paper?**
 
 **A:** This code implements the cross-entropy (training alternatingly) method for training our model. This method achieved much better and more stable performance than the models learned using EM training reported in our paper. In the cross-entropy loss function, instead of minimising the cross-entropy between the posteriors and output of classifier/reliability estimator, the estimated labels obtained according to the posteriors are used to compute the cross-entropy loss. Because in this way, the model could obtain good results faster than that of the original model. But you can still get good performance if you use the loss function described by Equation 6 and 7 in our paper.
+
 
 ****Q:** Some times the model obtained the highest label prediction performance at the first outer epoch, but it eventually starts to decrease at the following epochs. For example, the f1-scores at the first beginning epochs could be "0.989->0.987->0.984->0.977->0.987...".**
 
